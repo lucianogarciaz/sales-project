@@ -106,8 +106,9 @@ END WHILE;
 ```
 
 Finally, the formula to calculate the final price with discount is :
+
+**(NumberItems - WithPromotion) * Price + WithPromotion * PriceDiscount**
 ```
-SUM((NumberItems - WithPromotion) * Price + WithPromotion * PriceDiscount)
 Where: 
 NumberItems: Item numbers of the same product of the purchase.
 WithPromotion: Item numbers with discount of the same product of the purchase.

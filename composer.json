@@ -1,0 +1,97 @@
+{
+    "name": "yiisoft/yii2-app-advanced",
+    "description": "Yii 2 Advanced Application Template",
+    "keywords": ["yii2", "framework", "advanced", "application template"],
+    "homepage": "http://www.yiiframework.com/",
+    "type": "project",
+    "license": "BSD-3-Clause",
+    "support": {
+        "issues": "https://github.com/yiisoft/yii2/issues?state=open",
+        "forum": "http://www.yiiframework.com/forum/",
+        "wiki": "http://www.yiiframework.com/wiki/",
+        "irc": "irc://irc.freenode.net/yii",
+        "source": "https://github.com/yiisoft/yii2"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.4.0", 
+        "yiisoft/yii2": "2.0.13",
+        "yiisoft/yii2-bootstrap": "*",
+        "yiisoft/yii2-swiftmailer": "*",
+        "bower-asset/admin-lte": "*",
+        "bower-asset/font-awesome": "4.*", 
+        "bower-asset/bootstrap-confirmation2": "*",
+        "2amigos/yii2-date-picker-widget": "*",
+        "yiisoft/yii2-jui": "*",
+        "kartik-v/yii2-mpdf": "1.0.1",
+        "kartik-v/yii2-password": "*",
+        "kartik-v/yii2-widget-depdrop": "*",
+        "kartik-v/dependent-dropdown": "dev-master",
+        "kartik-v/yii2-money": "*",
+        "alexandernst/yii2-device-detect": "*",
+        "conquer/services": "*",
+        "bower-asset/jquery-sortable": "0.9.12",
+        "kartik-v/yii2-widget-select2": "*",
+        "vivekmarakana/yii2-dynamicform": "dev-master#cbdaf7c82db046c352e51f79fe8a5e78dfa28a77",
+        "kartik-v/yii2-widget-datetimepicker": "*",
+        "yiisoft/yii2-redis": "*",
+        "vakata/jstree": "^3.2",
+        "wisembly/elephant.io": "*",
+        "sammaye/yii2-elephantio": "dev-master",
+        "toriphes/yii2-console-runner": "dev-master",
+        "bower-asset/socket.io-client": "*",
+        "bower-asset/vue": "*",
+        "bower-asset/toastr": "*",
+        "bower-asset/bootstrap": "*",
+        "empathy/yii2-datetime-compare": "*",
+        "mongosoft/yii2-soap-server": "*",
+        "mongosoft/yii2-soap-client": "*",
+        "phpoffice/phpexcel": "*",
+        "farmani/yii2mailgunmailer": "*",
+        "yiisoft/yii2-httpclient": "*",
+        "bower-asset/lodash": "4.17.5",
+        "odaialali/yii2-toastr": "1.0b",
+        "bower-asset/owl.carousel": "*",
+        "bower-asset/keyboard": "*",
+        "bower-asset/underscore": "*",
+        "bower-asset/blockui": "2.*",
+        "danielmewes/php-rql": "dev-master",
+        "php-amqplib/php-amqplib": "2.6.*",
+        "xz1mefx/yii2-wysihtml5": "~1.0",
+        "google/cloud-storage": "^1.3",
+        "amphp/amp": "^2.0",
+        "amphp/redis": "^0.3.3",
+        "bower-asset/jquery.jscrollpane": "^2.0",
+        "bower-asset/hover": "^2.1",
+        "bower-asset/jquery-mousewheel": "^3.1",
+        "pctux/yii2-invisible-recaptcha": "*",
+        "bower-asset/vue-router": "^3.0",
+        "bower-asset/vuex": "^3.0",
+        "bower-asset/jquery": "3.*",
+        "npm-asset/normalizr": "^3.2"
+    },
+    "require-dev": {
+        "yiisoft/yii2-codeception": "*",
+        "yiisoft/yii2-debug": "*",
+        "yiisoft/yii2-gii": "*",
+        "yiisoft/yii2-faker": "*"
+    },
+    "config": {
+        "process-timeout": 1800,
+        "fxp-asset": {
+            "enabled": false
+        }
+    },
+    "extra": {
+        "asset-installer-paths": {
+            "npm-asset-library": "vendor/npm-asset",
+            "bower-asset-library": "vendor/bower-asset"
+        }
+    }
+}

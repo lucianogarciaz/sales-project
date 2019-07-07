@@ -1,0 +1,256 @@
+/**
+*   Estilos de uso general
+*/ 
+
+/* Texto alineado a la derecha */
+.r { 
+    text-align: right;
+}
+
+/* Ocupar todo el ancho */
+.full {
+    width: 100%;
+}
+
+/* 5 y 10 px de padding superior */
+.top5 { margin-top:5px; }
+.top10 { margin-top:10px; }
+
+/* Alinear lo que está dentro de este contenedor de manera centrada verticalmente  */
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+/* Padding y márgenes 0 */
+.pad0 {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Padding en los laterales */
+.padding-lateral {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Texto desenfocado */
+.text-muted {
+    color: transparent;
+    text-shadow: 0 0 0.05em rgba(0,0,0,0.5)
+}
+
+/* Para text inputs que se quieran mostrar como desactivados pero que de todas maneras sean editables */
+.inactivo input{
+    background-color: #eee;
+}
+
+/**
+*   Logo
+*/
+
+.logo img, .login-logo img {
+    max-width: 100%;
+}
+.login-box-msg {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    background: #3d9970;
+    box-shadow: inset 0px -3px 0px rgba(0, 0, 0, 0.2);
+    padding: 20px 10px;
+    text-align: center;
+    font-size: 26px;
+    font-weight: 300;
+    color: #fff;
+}
+
+.login-logo {
+    margin-bottom: 20px;
+}
+
+
+.form-inline {
+    padding: 10px;
+}
+
+.content button.pull-right {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.acciones {
+    text-align: center;
+    white-space: nowrap
+}
+
+.confirmation {
+    max-width: 400px;
+}
+
+.tree-container li {
+    list-style-type: none;
+}
+
+.progress {
+    margin-top: 20px;
+}
+
+.tags.affix {
+    top: 20px;
+}
+
+.contextual-bg {
+    padding: 10px;
+}
+
+.radiolist label {
+    min-width: 24%;
+    max-width: 24%;
+}
+
+.box.box-solid.box-white {
+    border: 1px solid #d2d6de;
+}
+
+table .form-group {
+    margin-bottom: 0;
+}
+
+.leyenda .box-header {
+    padding: 3px;
+    text-align: center;
+}
+
+.check-emergencia+span {
+    padding: 10px;
+}
+.check-emergencia:checked+span {
+    background-color: red;
+    color: #FFFFFF;
+}
+/*
+*   Datepicker
+*/
+.icon-arrow-left:before {
+    content: '<';
+}
+.icon-arrow-right:before {
+    content: '>';
+}
+.datetimepicker-inline, .datetimepicker table {
+    width: 100% !important;
+}
+
+/*
+*   Panel de cotizaciones
+*/
+
+.box-tools {
+    background: inherit;
+}
+.box.box-solid>.box-header .btn.btn-default {
+    background: inherit !important;
+}
+.box-white .box-header {
+    background: #FFFFFF;
+}
+
+.finalizacion input[type="radio"]:checked+span,
+.finalizacion input[type="checkbox"]:checked+span
+{ 
+    font-weight: bold; 
+    background-color: #dff0d8;
+    padding: 3px;
+} 
+
+/*
+*   Informes
+*/
+
+#doublescroll
+{
+    overflow: auto; overflow-y: hidden; 
+}
+#doublescroll p
+{
+    margin: 0; 
+    padding: 1em; 
+    white-space: nowrap; 
+}
+
+/**
+*   Blink
+*/
+
+@keyframes blink {  
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+@-webkit-keyframes blink {
+    0% { opacity: 1.0; }
+    50% { opacity: 0.0; }
+    100% { opacity: 1.0; }
+}
+.blink {
+    -webkit-animation: blink 2s linear infinite;
+    -moz-animation: blink 2s linear infinite;
+    animation: blink 2s linear infinite;
+} 
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/*
+*   Drag and Drop
+*/
+
+[draggable=true] {
+    cursor: move;
+    border: #d2d6de dashed 1px;
+    padding: 3px;
+}
+
+/*
+*   Estilos de vuejs
+*/
+[v-cloak],[v-init] { display: none }
+
+/*
+*   Affix
+*/
+.affix {
+    top: 10px;
+}
+
+/*
+*   Notificaciones
+*/
+
+.navbar-nav>.notifications-menu>.dropdown-menu>li .menu>li>a, .navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a, .navbar-nav>.tasks-menu>.dropdown-menu>li .menu>li>a
+{
+    white-space: normal;
+}
+/*
+*   Impresión
+*/
+
+.print-only {
+    display: none;
+}
+
+@media print {
+    .print-only {
+        display: block !important;
+    }
+    .no-break {
+        page-break-inside: avoid;
+    }
+}

@@ -1,97 +1,116 @@
-Yii 2 Advanced Application Template
-===================================
+# Sales project
 
-Yii 2 Advanced Application Template is a skeleton Yii 2 application best for
-developing complex Web applications with multiple tiers.
+Test environment: http://104.251.219.141:8000
+# The project is developed with:
 
-The template includes three tiers: front end, back end, and console, each of which
-is a separate Yii application.
+PHP (Yii2 Framework), Mysql (Database) and Vuejs (Frontend)
 
-The template is designed to work in a team development environment. It supports
-deploying the application in different environments.
+How I calculate the prices?
 
+I used stored procedures on Mysql to do it.
 
-DIRECTORY STRUCTURE
--------------------
-
-```
-common
-    config/              contains shared configurations
-    mail/                contains view files for e-mails
-    models/              contains model classes used in both backend and frontend
-console
-    config/              contains console configurations
-    controllers/         contains console controllers (commands)
-    migrations/          contains database migrations
-    models/              contains console-specific model classes
-    runtime/             contains files generated during runtime
-backend
-    assets/              contains application assets such as JavaScript and CSS
-    config/              contains backend configurations
-    controllers/         contains Web controller classes
-    models/              contains backend-specific model classes
-    runtime/             contains files generated during runtime
-    views/               contains view files for the Web application
-    web/                 contains the entry script and Web resources
-frontend
-    assets/              contains application assets such as JavaScript and CSS
-    config/              contains frontend configurations
-    controllers/         contains Web controller classes
-    models/              contains frontend-specific model classes
-    runtime/             contains files generated during runtime
-    views/               contains view files for the Web application
-    web/                 contains the entry script and Web resources
-    widgets/             contains frontend widgets
-vendor/                  contains dependent 3rd-party packages
-environments/            contains environment-based overrides
-tests                    contains various tests for the advanced application
-    codeception/         contains tests developed with Codeception PHP Testing Framework
+# Database:
+   
 ```
 
+    Products: {
+        IdProduct,
+        Product,
+        Description,
+        State 
+    }
 
-REQUIREMENTS
-------------
+    The idea is to have a price history
+    Prices: {
+        IdPrice,
+        IdProduct,
+        Price,
+        Date,
+        State,
+    }
 
-The minimum requirement by this application template that your Web server supports PHP 5.4.0.
+    
+    Discounts: {
+        IdDiscountm, // Id
+        Discount, // Name of the discount
+        Description, // A user friendly description.
+        Priority, // The discounts are processed by their order priority.
+        StartDate, 
+        EndDate, // The discount is available from StartDate to EndDate
+        Function, // It is the function called to process the discount. "It's the discount type"
+        State
+    }
+
+    The idea of this table is to have flexibilty by mixing different products in a same discount.
+    And a same product can be in more than one discount.
+    ProductsDiscount{
+        IdProduct,
+        IdDiscount
+    }
+```
 
 
-INSTALLATION
-------------
+## And now. How I did it?
 
-### Install from an Archive File
+I did a stored procedure called  **nsp_calculate_price**
+Where:
+The temporary table tmp_products is responsible for storing the purchase discounts
+```
+DROP TEMPORARY TABLE IF EXISTS tmp_products;
+	CREATE TEMPORARY TABLE tmp_products
+		(IdProduct int,
+		NumberItems int,
+		WithPromotion int,
+        Price 	decimal(10,2),
+        PriceDiscount 	decimal(10,2)
+    ) ENGINE = MEMORY;
+```
+And tmp_discounts is the temporary table that store all available discounts
+```
+DROP TEMPORARY TABLE IF EXISTS tmp_discounts;
+CREATE TEMPORARY TABLE tmp_discounts
+    (IdDiscount int,
+    Function varchar(45),
+    Priority int
+    ) ENGINE = MEMORY;
+    
+INSERT INTO tmp_discounts
+SELECT	IdDiscount, Function, Priority
+FROM 		Discounts 
+WHERE 		State = 'A' AND EndDate IS NULL
+ORDER BY Priority ASC;
+```
 
-Extract the archive file downloaded from [yiiframework.com](http://www.yiiframework.com/download/) to
-a directory named `advanced` that is directly under the Web root.
+After that, process all discounts by calling their respectives functions.
+```
+WHILE pIndex < pNumDiscounts DO
+		SET pIdDiscount = (SELECT IdDiscount FROM tmp_discounts ORDER BY 1 asc LIMIT 1);
+		SET pFunction = (SELECT Function FROM tmp_discounts WHERE IdDiscount = pIdDiscount);
+		CALL ssp_eval(CONCAT('CALL ', pFunction, '(', pIdDiscount,');'));        
+        DELETE FROM tmp_discounts WHERE IdDiscount = pIdDiscount;
+		SET pIndex = pIndex + 1;
+END WHILE;
+```
 
-Then follow the instructions given in "GETTING STARTED".
+e.g Function 2 for 1 **nsp_dis_2_for_1**
+```
+WHILE pIndex < pNumProd DO
+		SET pIdProduct = (SELECT IdProduct FROM tmp_products LIMIT pIndex, 1);
+		IF EXISTS (SELECT IdProduct FROM ProductsDiscount WHERE IdProduct = pIdProduct AND IdDiscount = pIdDiscount) THEN
+			UPDATE tmp_products 
+			SET WithPromotion = (SELECT FLOOR((NumberItems - WithPromotion)/2) * 2), PriceDiscount = (SELECT Price/2) 
+			WHERE IdProduct = pIdProduct;
+		END IF;
+		SET pIndex = pIndex + 1; 
+END WHILE;
+```
 
-
-### Install via Composer
-
-If you do not have [Composer](http://getcomposer.org/), you may install it by following the instructions
-at [getcomposer.org](http://getcomposer.org/doc/00-intro.md#installation-nix).
-
-You can then install the application using the following command:
-
-~~~
-php composer.phar global require "fxp/composer-asset-plugin:1.0.0-beta4"
-php composer.phar create-project --prefer-dist --stability=dev yiisoft/yii2-app-advanced advanced
-~~~
-
-
-GETTING STARTED
----------------
-
-After you install the application, you have to conduct the following steps to initialize
-the installed application. You only need to do these once for all.
-
-1. Run command `init` to initialize the application with a specific environment.
-2. Create a new database and adjust the `components['db']` configuration in `common/config/main-local.php` accordingly.
-3. Apply migrations with console command `yii migrate`. This will create tables needed for the application to work.
-4. Set document roots of your Web server:
-
-- for frontend `/path/to/yii-application/frontend/web/` and using the URL `http://frontend/`
-- for backend `/path/to/yii-application/backend/web/` and using the URL `http://backend/`
-
-To login into the application, you need to first sign up, with any of your email address, username and password.
-Then, you can login into the application with same email address and password at any time.
+Finally, the formula to calculate the final price with discount is :
+```
+SUM((NumberItems - WithPromotion) * Price + WithPromotion * PriceDiscount)
+Where: 
+NumberItems: Item numbers of the same product of the purchase.
+WithPromotion: Item numbers with discount of the same product of the purchase.
+PriceDiscount is the price of the product with the discount applied.
+Price: Price of the product.
+```
